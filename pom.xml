@@ -1,5 +1,7 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.nakanara</groupId>
     <artifactId>RDBCopy</artifactId>
@@ -18,32 +20,27 @@
         </plugins>
     </build>
     <name>RDBCopy Maven Mojo</name>
-    <url>http://maven.apache.org</url>
 
 
     <repositories>
-        <repository>
-            <id>oracle</id>
-            <name>ORACLE JDBC Repository</name>
-            <url>https://maven.atlassian.com/3rdparty/</url>
-        </repository>
-
 
         <repository>
-            <id>oracle</id>
-            <name>ORACLE JDBC Repository</name>
-            <url>http://maven.jahia.org/maven2</url>
+            <id>oracle ojdbc8</id>
+            <name>xwiki.org</name>
+            <url>https://maven.xwiki.org/externals/</url>
         </repository>
+
     </repositories>
 
 
     <dependencies>
 
         <!-- Oracle -->
+        <!-- https://mvnrepository.com/artifact/com.oracle.database.jdbc/ojdbc8 -->
         <dependency>
-            <groupId>com.oracle</groupId>
-            <artifactId>ojdbc6</artifactId>
-            <version>12.1.0.1-atlassian-hosted</version>
+            <groupId>com.oracle.database.jdbc</groupId>
+            <artifactId>ojdbc8</artifactId>
+            <version>12.2.0.1</version>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.mariadb.jdbc/mariadb-java-client -->
@@ -57,18 +54,27 @@
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
-            <version>8.0.15</version>
+            <version>8.0.28</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.tmax.tibero</groupId>
+            <artifactId>tibero-jdbc</artifactId>
+            <version>7.0</version>
+            <scope>system</scope>
+            <systemPath>${basedir}/src/main/lib/tibero7-jdbc.jar</systemPath>
         </dependency>
 
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
-            <version>1.7.7</version>
+            <version>1.7.36</version>
         </dependency>
+
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
-            <version>1.1.2</version>
+            <version>1.2.9</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.slf4j</groupId>
@@ -81,7 +87,7 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>3.8.1</version>
+            <version>4.12</version>
             <scope>test</scope>
         </dependency>
     </dependencies>

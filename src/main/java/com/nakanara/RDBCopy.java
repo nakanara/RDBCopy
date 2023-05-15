@@ -15,16 +15,16 @@ public class RDBCopy {
 
 
         String s_driver = "oracle.jdbc.OracleDriver";
-        String s_url    = "jdbc:oracle:thin:@localhost:1521/source";
+        String s_url    = "jdbc:oracle:thin:@//localhost:1521/sid";
         String s_user   = "user";
-        String s_pw     = "pw";
+        String s_pw     = "passwd";
 
-        String t_driver = "com.mysql.jdbc.Driver";
-        String t_url    = "jdbc:mysql://localhost:3306/target";
+        String t_driver = "com.tmax.tibero.jdbc.TbDriver";
+        String t_url    = "jdbc:tibero:thin:@localhost:8629:tibero";
         String t_user   = "user";
-        String t_pw     = "pw";
+        String t_pw     = "passwd";
 
-        String search_sql = "select * from source_table";;
+        String search_sql = "select * from source_table";
         String target_table = "target_table";
 
         // 원본 소스 정보

@@ -107,7 +107,8 @@ public class DataSource {
             for(Map<String, Object> data : md.getDatas()){
                 i=1;
                 for (String k : md.getColumns()) {
-                    ps.setObject(i, data.get(k));
+
+                    ps.setObject(i, (String)(data.get(k)));
                     i++;
                 }
 
