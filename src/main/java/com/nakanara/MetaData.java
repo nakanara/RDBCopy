@@ -3,11 +3,10 @@ package com.nakanara;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
 import java.io.Reader;
 import java.io.StringWriter;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.Types;
+import java.sql.*;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -60,7 +59,8 @@ public class MetaData {
 
         int t=0;
         int rowidx = 0;
-        String k = "", v = "";
+        String k = "";
+        Object v;
         int type = 0;
 
         while(rs.next()) {
@@ -69,33 +69,36 @@ public class MetaData {
 
             for(int i=0; i < columns.size(); i++) {
                 k = columns.get(i);
+                int j = i+1;
                 v = "";
                 type = columnType.get(i);
 
                 if(type == Types.CLOB) {
-                    Reader r = rs.getCharacterStream(i);
-                    if (r != null) {
-                        StringWriter w = new StringWriter();
-                        int read;
-                        while ((read = r.read()) != -1) {
-                            w.write(read);
+
+                    Reader r = null;
+                    try {
+                        r = rs.getCharacterStream(j);
+                        if(r != null) {
+                            v = convertClobToString(r);
                         }
-
-                        w.flush();
-                        v = w.toString();
+                    } finally {
+                        if(r != null) {
+                            try {
+                                r.close();
+                            }catch(Exception e){}
+                        }
                     }
-
-                }
-                else if(type == Types.DATE) {
-                    v =  df_dt.format(rs.getDate(i));
+                } else if(type == Types.DATE ) {
+                    v =  df_dt.format(rs.getDate(j));
+                } else if(type == Types.TIMESTAMP) {
+                    v = rs.getObject(j);
                 } else {
-                    v = rs.getString(k);
-                    data.put(k, v);
+                    v = rs.getString(j);
                 }
 
                 data.put(k, v);
                 if(t==0) {
-                    logger.debug("{} // Key={} //Value={}", rowidx, k, v);
+                    // logger.debug("{} // Key={} //Value={}", rowidx, k, v);
                 }
                 t++;
             }
@@ -103,6 +106,24 @@ public class MetaData {
 
             datas.add(data);
         }
+    }
+
+    protected String convertClobToString(Reader r){
+        StringBuffer v = new StringBuffer();
+
+        try {
+
+            int l_nchars = 0;
+            char[] l_buffer = new char[102400]; // 1024 * 100
+            while((l_nchars = r.read(l_buffer)) != -1){
+                v.append(l_buffer,0,l_nchars);
+            }
+
+        }catch(IOException ioe){
+            ioe.printStackTrace();
+        }
+
+        return v.toString();
     }
 
 

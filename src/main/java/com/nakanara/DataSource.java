@@ -108,7 +108,7 @@ public class DataSource {
                 i=1;
                 for (String k : md.getColumns()) {
 
-                    ps.setObject(i, (String)(data.get(k)));
+                    ps.setObject(i, (data.get(k)));
                     i++;
                 }
 
@@ -116,6 +116,30 @@ public class DataSource {
             }
 
             ps.executeBatch();
+
+        }catch(SQLException e){
+            e.printStackTrace();
+            logger.error("Sql Exception={}", e);
+        }finally {
+            try {
+                ps.close();
+            }catch(Exception e){
+                logger.error("Error={}", e);
+            }
+        }
+    }
+
+    public void truncate(String table)  {
+        StringBuffer buf = new StringBuffer();
+
+        buf.append("TRUNCATE TABLE ").append(table);
+
+        // 데이터 입력
+        PreparedStatement ps = null;
+
+        try {
+            ps = connection.prepareStatement(buf.toString());
+            ps.execute();
 
         }catch(SQLException e){
             e.printStackTrace();
